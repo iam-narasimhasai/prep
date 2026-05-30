@@ -1,3 +1,4 @@
+#kubectl create deployment myapp --image=nginx --dry-run=client -o yaml  change kind to replicaset
 apiVersion: apps/v1
 kind: Replicaset
 metadata:

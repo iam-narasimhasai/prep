@@ -1,0 +1,25 @@
+#kubectl create service clusterip myapp --tcp=80:808 --dry-run=client -o yaml
+# kubectl create service <type> <name> <flags>
+#                           │       │
+#                       clusterip  myapp
+#                       nodeport
+#                       loadbalancer
+#kubectl create service clusterip myapp --clusterip="None" --tcp=80:808 --dry-run=client -o yaml (for headless service)
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: myapp
+  name: myapp
+spec:
+  ports:
+  - name: 80-808
+    port: 80
+    protocol: TCP
+    targetPort: 808
+  selector:
+    app: myapp
+  type: ClusterIP
+status:
+  loadBalancer: {}

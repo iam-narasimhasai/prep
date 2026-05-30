@@ -1,3 +1,4 @@
+#kubectl run pod --image=nginx --dry-run=client -o yaml
 apiVersion: v1
 kind: Pod
 metadata:
