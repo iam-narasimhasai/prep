@@ -1,0 +1,26 @@
+#nodeport range 30000–32767
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysvc
+spec:
+  type: ClusterIP
+  selector:
+    app: myapp
+  ports:
+    - port: 80
+      targetPort: 80
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysvc
+spec:
+  type: ClusterIP
+  selector:
+    app: myapp
+  ports:
+    - port: 80
+      targetPort: 80
+      nodeport: 30010

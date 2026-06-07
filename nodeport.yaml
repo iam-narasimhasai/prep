@@ -1,0 +1,40 @@
+#kubectl create service nodeport myapp --tcp=888:80 --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: myapp
+  name: myapp
+spec:
+  ports:
+  - name: 888-80
+    port: 888
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: myapp
+  type: NodePort
+status:
+  loadBalancer: {}
+
+#kubectl create service nodeport myapp --tcp=80:80 --node-port=32000 --dry-run=client -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: myapp
+  name: myapp
+spec:
+  ports:
+  - name: 80-80
+    nodePort: 32000
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: myapp
+  type: NodePort
+status:
+  loadBalancer: {}

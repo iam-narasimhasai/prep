@@ -1,0 +1,14 @@
+#kubectl create resourcequota quota --hard=requests.cpu=2,requests.memory=1Gi,limits.cpu=4,limits.memory=500m,pods=10 --dry-run=client -o yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  creationTimestamp: null
+  name: quota
+spec:
+  hard:
+    limits.cpu: "4"
+    limits.memory: 500m
+    pods: "10"
+    requests.cpu: "2"
+    requests.memory: 1Gi
+status: {}
