@@ -214,13 +214,46 @@ matching pods already run within a given topology (node, zone, etc).
 
 A node label that defines the "domain" the rule applies within.
 
-```
-topologyKey: kubernetes.io/hostname    -> domain = a single node
-topologyKey: topology.kubernetes.io/zone -> domain = an availability zone
-```
-
 Read it as: "within each group of nodes sharing the same value of <topologyKey>,
 apply this rule."
+
+#### Well-known topology keys
+
+`topologyKey` can be ANY node label, including custom ones you set yourself
+(e.g. `rack`). These three are the standard, auto-populated ones:
+
+```
+kubernetes.io/hostname              -> one node      (most granular)
+topology.kubernetes.io/zone         -> availability zone
+topology.kubernetes.io/region       -> region         (broadest)
+```
+
+The hierarchy:
+
+```
+region                                  (e.g. us-east-1)
+  +-- zone  (us-east-1a)
+  |     +-- node01  hostname
+  |     +-- node02  hostname
+  +-- zone  (us-east-1b)
+        +-- node03  hostname
+        +-- node04  hostname
+```
+
+Pick the LEVEL the rule applies within:
+
+```
+topologyKey: kubernetes.io/hostname  -> "per node"   -> tightest spread/co-locate
+topologyKey: .../zone                -> "per zone"   -> survive a zone outage
+topologyKey: .../region              -> "per region" -> rarely used here
+```
+
+Notes:
+- `kubernetes.io/hostname` has a UNIQUE value per node, so it always defines
+  single-node domains -> the default for "one replica per node" anti-affinity.
+- Older clusters use the deprecated beta names
+  `failure-domain.beta.kubernetes.io/zone` and `.../region`. GA names are
+  `topology.kubernetes.io/zone` and `.../region`. Recognize both on the CKA.
 
 ### Pod Affinity (co-locate)
 
